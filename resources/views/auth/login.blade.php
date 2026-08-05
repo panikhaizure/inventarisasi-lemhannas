@@ -14,19 +14,21 @@
         @csrf
 
         <!-- 1. EMAIL / USERNAME -->
-        <div>
-            <x-input-label for="login_key" :value="__('Email / Username')" />
-            <x-text-input id="login_key" class="block mt-1 w-full" type="text" name="login_key" :value="old('login_key')" required autofocus autocomplete="username" placeholder="Masukkan email atau username" />
-            <x-input-error :messages="$errors->get('login_key')" class="mt-2" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+<div>
+    <x-input-label for="login_key" :value="__('Email / Username')" />
+    <x-text-input id="login_key" class="block mt-1 w-full" type="text" name="login_key" :value="old('login_key')" required autofocus autocomplete="username" placeholder="Masukkan email atau username" />
+    <x-input-error :messages="$errors->get('login_key')" class="mt-2" />
+    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+</div>
 
-<!-- Password Field -->
+<!-- 2. PASSWORD (Ganti Total Pakai Input Biasa) -->
 <div class="mt-4">
-    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+    <x-input-label for="password" :value="__('Password')" />
 
-    <!-- Wrapper Khusus Input + Icon (Sangat Spesifik) -->
-    <div class="relative mt-1 block w-full">
+    <!-- KOTAK PEMBUNGKUS UTAMA (Input + Mata di dalamnya) -->
+    <div class="mt-1 flex items-center w-full rounded-md border border-gray-300 bg-white shadow-sm focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+        
+        <!-- Input Password Murni (Tanpa Border Biar Mengikuti Kotak Utama) -->
         <input 
             id="password" 
             type="password" 
@@ -34,14 +36,15 @@
             placeholder="Masukkan password" 
             required 
             autocomplete="current-password" 
-            class="block w-full text-sm pl-3.5 pr-10 py-2.5 rounded-xl border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm transition"
-        >
+            class="w-full border-0 focus:ring-0 focus:outline-none text-sm px-3 py-2 bg-transparent rounded-l-md"
+            style="border: none !important; box-shadow: none !important;"
+        />
 
-        <!-- Tombol Mata dengan Pengunci Tengah Vertikal Kuat -->
+        <!-- Tombol Mata Berada Dalam Baris yang Sama -->
         <button 
             type="button" 
             onclick="togglePasswordVisibility()" 
-            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none flex items-center justify-center p-1"
+            class="px-3 text-gray-400 hover:text-gray-600 focus:outline-none flex items-center justify-center shrink-0"
         >
             <!-- Icon Mata Terbuka -->
             <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden">
@@ -58,19 +61,6 @@
     <!-- Error ditaruh DILUAR div relative -->
     <x-input-error :messages="$errors->get('password')" class="mt-2" />
 </div>
-
-        <!-- 3. CHECKBOX INGATKAN SAYA -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center cursor-pointer">
-                <input 
-                    id="remember_me" 
-                    type="checkbox" 
-                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 cursor-pointer" 
-                    name="remember"
-                >
-                <span class="ms-2 text-sm text-gray-600 select-none">{{ __('Ingatkan Saya') }}</span>
-            </label>
-        </div>
 
         <!-- 4. BUTTON SUBMIT & DASHBOARD LINK -->
         <div class="flex items-center justify-between mt-6">
