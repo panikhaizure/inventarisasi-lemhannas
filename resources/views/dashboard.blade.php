@@ -3,155 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Statistik - Inventaris Aplikasi</title>
+    <title>Dashboard Statistik - Inventarisasi Lemhannas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Poppins', sans-serif; }</style>
 </head>
-<body class="bg-gray-100 font-sans text-gray-800 antialiased flex h-screen overflow-hidden">
+<body class="bg-[#f4f7fe] text-gray-800 antialiased min-h-screen flex flex-col bg-gradient-to-br from-purple-100/40 via-[#f4f7fe] to-white">
 
-
-
-    <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col h-screen overflow-y-auto">
-
-        <!-- Top Header Navigation -->
-        <header class="bg-white border-b border-gray-200 px-6 py-3.5 flex items-center justify-between sticky top-0 z-10 shadow-sm">
-            <div class="flex items-center gap-4 text-gray-500">
-                <i class="fa-solid fa-bars cursor-pointer hover:text-gray-700"></i>
-                <span class="text-sm font-medium text-gray-600">Beranda</span>
-            </div>
-            <div>
-                @auth
-                <form method="POST" action="/logout">
-                    @csrf
-                    <button type="submit" class="text-xs font-medium text-gray-600 hover:text-rose-600 flex items-center gap-1.5">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout
-                    </button>
-                </form>
-                @else
-                <a href="/login" class="text-xs font-medium text-blue-600 hover:underline flex items-center gap-1.5">
+    <!-- Header Navigation -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-purple-100/60 px-8 py-4 flex items-center justify-between sticky top-0 z-20 shadow-xs">
+        <div class="flex items-center gap-3">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-8 h-8 object-contain">
+            <span class="text-sm font-bold text-gray-800 tracking-wide">Dashboard Statistik Inventaris</span>
+        </div>
+        <div>
+            @auth
+                <a href="{{ route('admin.aplikasi.index') }}" class="text-xs font-semibold text-white bg-[#8B5CF6] hover:bg-purple-700 px-4 py-2 rounded-xl shadow-md shadow-purple-500/20 transition">
+                    <i class="fa-solid fa-user-gear mr-1"></i> Panel Admin
+                </a>
+            @else
+                <a href="{{ route('login') }}" class="text-xs font-semibold text-[#8B5CF6] hover:text-purple-800 flex items-center gap-1.5 bg-purple-50 px-3.5 py-2 rounded-full transition">
                     <i class="fa-solid fa-right-to-bracket"></i> Login Super Admin
                 </a>
-                @endauth
-            </div>
-        </header>
+            @endauth
+        </div>
+    </header>
 
-        <!-- Body Dashboard Content -->
-        <main class="p-6 space-y-6 flex-1">
-            <h1 class="text-2xl font-bold text-gray-800">Dashboard Statistik</h1>
+    <!-- Main Content -->
+    <main class="p-6 md:p-10 max-w-7xl mx-auto w-full space-y-8 flex-1">
+        
+        <div>
+            <h1 class="text-2xl font-extrabold text-gray-800">Dashboard Statistik</h1>
+            <p class="text-xs text-gray-500 mt-1">Ringkasan infrastruktur, platform, dan status inventarisasi aplikasi.</p>
+        </div>
 
-            <!-- 4 Cards Stat In Line -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Card 1: Total Aplikasi -->
-                <div class="bg-cyan-600 text-white rounded-lg shadow overflow-hidden relative flex flex-col justify-between">
-                    <div class="p-4">
-                        <div class="text-3xl font-extrabold">{{ $totalAplikasi ?? 0 }}</div>
-                        <div class="text-xs text-cyan-100 font-medium mt-1">Total Aplikasi</div>
-                        <i class="fa-solid fa-boxes-stacked text-5xl absolute top-3 right-3 text-cyan-500/40"></i>
-                    </div>
-                    <a href="{{ Auth::check() ? '/admin/aplikasi' : '/login' }}" class="bg-cyan-700/60 hover:bg-cyan-700 py-1.5 px-4 text-xs text-center font-medium flex items-center justify-center gap-1">
-                        Lihat Detail <i class="fa-solid fa-circle-arrow-right"></i>
-                    </a>
+        <!-- Metric Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-purple-100 shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-3xl font-extrabold text-[#8B5CF6]">{{ $totalAplikasi ?? 0 }}</span>
+                    <p class="text-xs font-semibold text-gray-400 mt-1">Total Aplikasi</p>
                 </div>
-
-                <!-- Card 2: Aktif -->
-                <div class="bg-emerald-600 text-white rounded-lg shadow overflow-hidden relative flex flex-col justify-between">
-                    <div class="p-4">
-                        <div class="text-3xl font-extrabold">{{ $statusData['aktif'] ?? 0 }}</div>
-                        <div class="text-xs text-emerald-100 font-medium mt-1">Aplikasi Aktif</div>
-                        <i class="fa-solid fa-circle-check text-5xl absolute top-3 right-3 text-emerald-500/40"></i>
-                    </div>
-                    <a href="{{ Auth::check() ? '/admin/aplikasi' : '/login' }}" class="bg-emerald-700/60 hover:bg-emerald-700 py-1.5 px-4 text-xs text-center font-medium flex items-center justify-center gap-1">
-                        Lihat Detail <i class="fa-solid fa-circle-arrow-right"></i>
-                    </a>
-                </div>
-
-                <!-- Card 3: Dalam Pengembangan -->
-                <div class="bg-amber-500 text-white rounded-lg shadow overflow-hidden relative flex flex-col justify-between">
-                    <div class="p-4">
-                        <div class="text-3xl font-extrabold">{{ $statusData['dalam_pengembangan'] ?? 0 }}</div>
-                        <div class="text-xs text-amber-100 font-medium mt-1">Dalam Pengembangan</div>
-                        <i class="fa-solid fa-code-merge text-5xl absolute top-3 right-3 text-amber-400/40"></i>
-                    </div>
-                    <a href="{{ Auth::check() ? '/admin/aplikasi' : '/login' }}" class="bg-amber-600/60 hover:bg-amber-600 py-1.5 px-4 text-xs text-center font-medium flex items-center justify-center gap-1">
-                        Lihat Detail <i class="fa-solid fa-circle-arrow-right"></i>
-                    </a>
-                </div>
-
-                <!-- Card 4: Tidak Aktif -->
-                <div class="bg-rose-600 text-white rounded-lg shadow overflow-hidden relative flex flex-col justify-between">
-                    <div class="p-4">
-                        <div class="text-3xl font-extrabold">{{ $statusData['tidak_aktif'] ?? 0 }}</div>
-                        <div class="text-xs text-rose-100 font-medium mt-1">Tidak Aktif</div>
-                        <i class="fa-solid fa-circle-xmark text-5xl absolute top-3 right-3 text-rose-500/40"></i>
-                    </div>
-                    <a href="{{ Auth::check() ? '/admin/aplikasi' : '/login' }}" class="bg-rose-700/60 hover:bg-rose-700 py-1.5 px-4 text-xs text-center font-medium flex items-center justify-center gap-1">
-                        Lihat Detail <i class="fa-solid fa-circle-arrow-right"></i>
-                    </a>
+                <div class="w-12 h-12 rounded-xl bg-purple-50 text-[#8B5CF6] flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-cubes"></i>
                 </div>
             </div>
 
-            <!-- Charts Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 bg-white rounded-lg border border-gray-200 shadow-sm p-4">
-                    <div class="flex items-center gap-2 border-b border-gray-100 pb-3 mb-4 text-sm font-semibold text-gray-700">
-                        <i class="fa-solid fa-chart-pie text-blue-600"></i> Grafik Status Aplikasi
-                    </div>
-                    <div class="h-64 flex justify-center items-center">
-                        <canvas id="statusChart"></canvas>
-                    </div>
+            <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-purple-100 shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-3xl font-extrabold text-purple-600">{{ $statusAktif ?? 0 }}</span>
+                    <p class="text-xs font-semibold text-purple-400 mt-1">Aplikasi Aktif</p>
                 </div>
-
-                <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-4">
-                    <div class="flex items-center gap-2 border-b border-gray-100 pb-3 mb-3 text-sm font-semibold text-gray-700">
-                        <i class="fa-solid fa-clock text-blue-600"></i> Informasi Ringkas
-                    </div>
-                    <div class="space-y-2 text-xs">
-                        <div class="p-3 bg-gray-50 border border-gray-100 rounded-lg flex justify-between items-center">
-                            <span class="font-semibold text-gray-700">Total Record Sistem</span>
-                            <span class="bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded">{{ $totalAplikasi ?? 0 }} items</span>
-                        </div>
-                        <div class="p-3 bg-gray-50 border border-gray-100 rounded-lg flex justify-between items-center">
-                            <span class="font-semibold text-gray-700">Status Database</span>
-                            <span class="bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded">SQLite Ready</span>
-                        </div>
-                    </div>
+                <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-circle-check"></i>
                 </div>
             </div>
-        </main>
 
-        <footer class="bg-white border-t border-gray-200 px-6 py-3 flex justify-between text-xs text-gray-500">
-            <div>Copyright © {{ date('Y') }} <strong>Admin Inventaris</strong>. All rights reserved.</div>
-            <div>Version 1.0.0</div>
-        </footer>
-    </div>
+            <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-purple-100 shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-3xl font-extrabold text-amber-500">{{ $statusPengembangan ?? 0 }}</span>
+                    <p class="text-xs font-semibold text-amber-400 mt-1">Dalam Pengembangan</p>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-code-branch"></i>
+                </div>
+            </div>
 
+            <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl border border-purple-100 shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-3xl font-extrabold text-rose-500">{{ $statusTidakAktif ?? 0 }}</span>
+                    <p class="text-xs font-semibold text-rose-400 mt-1">Tidak Aktif</p>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Grid Section 1 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Chart 1: Status Aplikasi (Doughnut) -->
+            <div class="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-purple-100 shadow-sm flex flex-col justify-between">
+                <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-[#8B5CF6]"></i> Status Aplikasi
+                </h3>
+                <div class="relative h-56 flex items-center justify-center">
+                    <canvas id="chartStatus"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 2: Tipe Akses (Bar/Pie) -->
+            <div class="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-purple-100 shadow-sm flex flex-col justify-between">
+                <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-[#8B5CF6] fa-network-wired text-[#8B5CF6]"></i> Tipe Akses (Jaringan)
+                </h3>
+                <div class="relative h-56 flex items-center justify-center">
+                    <canvas id="chartAkses"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 3: Platform Aplikasi (Bar Horizontal) -->
+            <div class="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-purple-100 shadow-sm flex flex-col justify-between">
+                <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-laptop-code text-[#8B5CF6]"></i> Platform Aplikasi
+                </h3>
+                <div class="relative h-56 flex items-center justify-center">
+                    <canvas id="chartPlatformApp"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Charts Grid Section 2 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Chart 4: Platform Database -->
+            <div class="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-purple-100 shadow-sm">
+                <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-database text-[#8B5CF6]"></i> Sebaran Platform Database
+                </h3>
+                <div class="relative h-60">
+                    <canvas id="chartPlatformDb"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 5: Framework Stack -->
+            <div class="bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-purple-100 shadow-sm">
+                <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-[#8B5CF6]"></i> Framework & Stack
+                </h3>
+                <div class="relative h-60">
+                    <canvas id="chartFramework"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white/80 backdrop-blur-md border-t border-purple-100/60 px-8 py-4 flex justify-between text-xs text-gray-500">
+        <div>Copyright © {{ date('Y') }} <strong>Admin Inventaris</strong>. All rights reserved.</div>
+        <div>Version 1.2.0</div>
+    </footer>
+
+    <!-- Chart.js Integration Script -->
     <script>
-        const ctx = document.getElementById('statusChart').getContext('2d');
-        const labels = {!! json_encode($labels ?? ['aktif', 'dalam_pengembangan', 'tidak_aktif']) !!};
-        const data = {!! json_encode($totals ?? [0, 0, 0]) !!};
+        const purplePalette = ['#8B5CF6', '#A78BFA', '#C4B5FD', '#DDD6FE', '#F43F5E', '#F59E0B', '#10B981', '#06B6D4'];
 
-        new Chart(ctx, {
+        // 1. Chart Status Aplikasi
+        new Chart(document.getElementById('chartStatus'), {
             type: 'doughnut',
             data: {
-                labels: labels.map(l => l.replace('_', ' ').toUpperCase()),
+                labels: ['Aktif', 'Dalam Pengembangan', 'Tidak Aktif'],
                 datasets: [{
-                    data: data,
-                    backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
-                    borderWidth: 2,
-                    borderColor: '#ffffff'
+                    data: [{{ $statusAktif ?? 0 }}, {{ $statusPengembangan ?? 0 }}, {{ $statusTidakAktif ?? 0 }}],
+                    backgroundColor: ['#8B5CF6', '#F59E0B', '#F43F5E'],
+                    borderWidth: 0
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    }
-                },
-                cutout: '65%'
+                plugins: { legend: { position: 'bottom', labels: { font: { family: 'Poppins', size: 10 } } } }
+            }
+        });
+
+        // 2. Chart Tipe Akses
+        new Chart(document.getElementById('chartAkses'), {
+            type: 'pie',
+            data: {
+                labels: ['IP Internal (Private)', 'Aplikasi Publik'],
+                datasets: [{
+                    data: [{{ $aksesInternal ?? 0 }}, {{ $aksesPublik ?? 0 }}],
+                    backgroundColor: ['#8B5CF6', '#06B6D4'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { font: { family: 'Poppins', size: 10 } } } }
+            }
+        });
+
+        // 3. Chart Platform Aplikasi
+        new Chart(document.getElementById('chartPlatformApp'), {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($platformApp->keys() ?? []) !!},
+                datasets: [{
+                    label: 'Jumlah Aplikasi',
+                    data: {!! json_encode($platformApp->values() ?? []) !!},
+                    backgroundColor: '#A78BFA',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } }
+            }
+        });
+
+        // 4. Chart Platform Database
+        new Chart(document.getElementById('chartPlatformDb'), {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($platformDb->keys() ?? []) !!},
+                datasets: [{
+                    label: 'Jumlah Database',
+                    data: {!! json_encode($platformDb->values() ?? []) !!},
+                    backgroundColor: '#8B5CF6',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+            }
+        });
+
+        // 5. Chart Framework
+        new Chart(document.getElementById('chartFramework'), {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($frameworks->keys() ?? []) !!},
+                datasets: [{
+                    label: 'Jumlah',
+                    data: {!! json_encode($frameworks->values() ?? []) !!},
+                    backgroundColor: '#06B6D4',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
             }
         });
     </script>

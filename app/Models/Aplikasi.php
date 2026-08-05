@@ -10,21 +10,22 @@ class Aplikasi extends Model
     use HasFactory;
 
     protected $fillable = [
-    'user_id',
     'nama_aplikasi',
     'pic',
-    'url',
-    'domain',
+    'status',
     'server',
-    'bahasa_pemograman',
+    'uraian_singkat',
+    'url_aplikasi',
+    'alamat_ip',
+    'jenis_akses',
+    'platform_aplikasi',
+    'platform_database',
+    'bahasa_pemrograman',
     'framework',
     'os_server',
     'database_engine',
     'web_server',
-    'versi',
     'password_server',
-    'status',
-    'keterangan',
 ];
 
     /**

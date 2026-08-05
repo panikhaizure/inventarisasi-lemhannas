@@ -21,6 +21,15 @@ return new class extends Migration
             $table->string('nama_aplikasi');
             $table->string('pic');
 
+            // --- TAMBAHAN FIELD BARU ---
+            $table->text('uraian_singkat')->nullable();
+            $table->string('url_aplikasi')->nullable();
+            $table->string('alamat_ip')->nullable();
+            $table->enum('jenis_akses', ['publik', 'internal'])->default('internal');
+            $table->string('platform_aplikasi')->nullable();
+            $table->string('platform_database')->nullable();
+            // ---------------------------
+
             $table->string('url')->nullable();
             $table->string('domain')->nullable();
 
