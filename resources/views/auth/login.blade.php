@@ -29,18 +29,30 @@
                             type="password"
                             name="password"
                             required autocomplete="current-password"
-                            placeholder="••••••••" />
+                            placeholder="Masukan Password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Remember Me -->
+        
+
         <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+    <label for="show_password" class="inline-flex items-center cursor-pointer">
+        <input id="show_password" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" onclick="togglePasswordVisibility()">
+        <span class="ms-2 text-sm text-gray-600">Lihat Password</span>
+    </label>
+</div>
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password';
+        }
+    }
+</script>
 
         <div class="flex items-center justify-between mt-6">
             <a href="/dashboard" class="text-sm text-gray-600 hover:text-indigo-600 flex items-center gap-1">
