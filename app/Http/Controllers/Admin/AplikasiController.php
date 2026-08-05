@@ -29,7 +29,7 @@ class AplikasiController extends Controller
             'nama_aplikasi'     => 'required|string|max:255',
             'pic'               => 'required|string|max:255',
             'server'            => 'nullable|string|max:255',
-            'bahasa_pemograman' => 'nullable|string|max:255',
+            'bahasa_pemrograman'=> 'nullable|string|max:255',
             'framework'         => 'nullable|string|max:255',
             'os_server'         => 'nullable|string|max:255',
             'database_engine'   => 'nullable|string|max:255',
@@ -66,7 +66,13 @@ class AplikasiController extends Controller
     'jenis_akses'       => 'nullable|in:publik,internal',
     'platform_aplikasi' => 'nullable|string',
     'platform_database' => 'nullable|string',
-    // field lainnya...
+    'server'            => 'nullable|string|max:255',
+    'bahasa_pemrograman'=> 'nullable|string|max:255',
+    'framework'         => 'nullable|string|max:255',
+    'os_server'         => 'nullable|string|max:255',
+    'database_engine'   => 'nullable|string|max:255',
+    'web_server'        => 'nullable|string|max:255',
+    'password_server'   => 'nullable|string|max:255',
 ]);
 
 $aplikasi->update($validated);

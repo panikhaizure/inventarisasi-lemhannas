@@ -10,6 +10,7 @@ class Aplikasi extends Model
     use HasFactory;
 
     protected $fillable = [
+    'user_id',
     'nama_aplikasi',
     'pic',
     'status',
