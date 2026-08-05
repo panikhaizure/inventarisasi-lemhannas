@@ -28,16 +28,23 @@ class AplikasiController extends Controller
         $validated = $request->validate([
             'nama_aplikasi'     => 'required|string|max:255',
             'pic'               => 'required|string|max:255',
-            'server'            => 'nullable|string|max:255',
+            'status'            => 'required|in:aktif,tidak_aktif,dalam_pengembangan',
+            'uraian_singkat'    => 'nullable|string',
+            'url'               => 'nullable|url|max:255',
+            'alamat_ip'         => 'nullable|string|max:255',
+            'jenis_akses'       => 'nullable|in:publik,internal',
+            'platform_aplikasi' => 'nullable|string|max:255',
+            'platform_database' => 'nullable|string|max:255',
             'bahasa_pemograman' => 'nullable|string|max:255',
             'framework'         => 'nullable|string|max:255',
             'os_server'         => 'nullable|string|max:255',
             'database_engine'   => 'nullable|string|max:255',
+            'server'            => 'nullable|string|max:255',
             'web_server'        => 'nullable|string|max:255',
             'password_server'   => 'nullable|string|max:255',
-            'status'            => 'required|in:aktif,tidak_aktif,dalam_pengembangan',
         ]);
 
+        // Otomatis memasukkan ID user yang sedang login
         $validated['user_id'] = $request->user()->id;
 
         Aplikasi::create($validated);
@@ -56,20 +63,26 @@ class AplikasiController extends Controller
     // PROSES EDIT DATA
     public function update(Request $request, Aplikasi $aplikasi)
     {
-       $validated = $request->validate([
-    'nama_aplikasi'     => 'required|string|max:255',
-    'pic'               => 'required|string|max:255',
-    'status'            => 'required',
-    'uraian_singkat'    => 'nullable|string',
-    'url_aplikasi'      => 'nullable|url',
-    'alamat_ip'         => 'nullable|string',
-    'jenis_akses'       => 'nullable|in:publik,internal',
-    'platform_aplikasi' => 'nullable|string',
-    'platform_database' => 'nullable|string',
-    // field lainnya...
-]);
+        $validated = $request->validate([
+            'nama_aplikasi'     => 'required|string|max:255',
+            'pic'               => 'required|string|max:255',
+            'status'            => 'required|in:aktif,tidak_aktif,dalam_pengembangan',
+            'uraian_singkat'    => 'nullable|string',
+            'url'               => 'nullable|url|max:255',
+            'alamat_ip'         => 'nullable|string|max:255',
+            'jenis_akses'       => 'nullable|in:publik,internal',
+            'platform_aplikasi' => 'nullable|string|max:255',
+            'platform_database' => 'nullable|string|max:255',
+            'bahasa_pemograman' => 'nullable|string|max:255',
+            'framework'         => 'nullable|string|max:255',
+            'os_server'         => 'nullable|string|max:255',
+            'database_engine'   => 'nullable|string|max:255',
+            'server'            => 'nullable|string|max:255',
+            'web_server'        => 'nullable|string|max:255',
+            'password_server'   => 'nullable|string|max:255',
+        ]);
 
-$aplikasi->update($validated);
+        $aplikasi->update($validated);
 
         return redirect()
             ->route('admin.aplikasi.index')
