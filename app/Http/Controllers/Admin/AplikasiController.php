@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class AplikasiController extends Controller
 {
-    // Lihat Data Detail: daftar seluruh aplikasi
+    // 1. LIHAT DATA DETAIL: Menampilkan tabel seluruh record aplikasi
     public function index()
     {
         $aplikasis = Aplikasi::with('user')->latest()->paginate(15);
@@ -16,26 +16,26 @@ class AplikasiController extends Controller
         return view('admin.aplikasi.index', compact('aplikasis'));
     }
 
-    // Form Input Data
+    // 2. INPUT DATA: Menampilkan form tambah aplikasi
     public function create()
     {
         return view('admin.aplikasi.create');
     }
 
-    // Proses Input Data
+    // PROSES INPUT DATA
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_aplikasi' => 'required|string|max:255',
-            'pic' => 'required|string|max:255',
-            'server' => 'nullable|string|max:255',
+            'nama_aplikasi'     => 'required|string|max:255',
+            'pic'               => 'required|string|max:255',
+            'server'            => 'nullable|string|max:255',
             'bahasa_pemograman' => 'nullable|string|max:255',
-            'framework' => 'nullable|string|max:255',
-            'os_server' => 'nullable|string|max:255',
-            'database_engine' => 'nullable|string|max:255',
-            'web_server' => 'nullable|string|max:255',
-            'password_server' => 'nullable|string|max:255',
-            'status' => 'required|in:aktif,tidak_aktif,dalam_pengembangan',
+            'framework'         => 'nullable|string|max:255',
+            'os_server'         => 'nullable|string|max:255',
+            'database_engine'   => 'nullable|string|max:255',
+            'web_server'        => 'nullable|string|max:255',
+            'password_server'   => 'nullable|string|max:255',
+            'status'            => 'required|in:aktif,tidak_aktif,dalam_pengembangan',
         ]);
 
         $validated['user_id'] = $request->user()->id;
@@ -47,36 +47,36 @@ class AplikasiController extends Controller
             ->with('success', 'Data aplikasi berhasil ditambahkan.');
     }
 
-    // Form Edit Data
+    // 3. EDIT DATA: Menampilkan form ubah data aplikasi
     public function edit(Aplikasi $aplikasi)
     {
         return view('admin.aplikasi.edit', compact('aplikasi'));
     }
 
-    // Proses Edit Data
+    // PROSES EDIT DATA
     public function update(Request $request, Aplikasi $aplikasi)
     {
-        $validated = $request->validate([
-            'nama_aplikasi' => 'required|string|max:255',
-            'pic' => 'required|string|max:255',
-            'server' => 'nullable|string|max:255',
-            'bahasa_pemograman' => 'nullable|string|max:255',
-            'framework' => 'nullable|string|max:255',
-            'os_server' => 'nullable|string|max:255',
-            'database_engine' => 'nullable|string|max:255',
-            'web_server' => 'nullable|string|max:255',
-            'password_server' => 'nullable|string|max:255',
-            'status' => 'required|in:aktif,tidak_aktif,dalam_pengembangan',
-        ]);
+       $validated = $request->validate([
+    'nama_aplikasi'     => 'required|string|max:255',
+    'pic'               => 'required|string|max:255',
+    'status'            => 'required',
+    'uraian_singkat'    => 'nullable|string',
+    'url_aplikasi'      => 'nullable|url',
+    'alamat_ip'         => 'nullable|string',
+    'jenis_akses'       => 'nullable|in:publik,internal',
+    'platform_aplikasi' => 'nullable|string',
+    'platform_database' => 'nullable|string',
+    // field lainnya...
+]);
 
-        $aplikasi->update($validated);
+$aplikasi->update($validated);
 
         return redirect()
             ->route('admin.aplikasi.index')
             ->with('success', 'Data aplikasi berhasil diperbarui.');
     }
 
-    // Hapus Data
+    // 4. HAPUS DATA: Menghapus record aplikasi
     public function destroy(Aplikasi $aplikasi)
     {
         $aplikasi->delete();
