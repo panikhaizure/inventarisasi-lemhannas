@@ -48,10 +48,10 @@
             @csrf
 
             <div class="space-y-1.5">
-                <label for="email" class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Email</label>
-                <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username"
+                <label for="login_key" class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider">Email / Username</label>
+                <input id="login_key" type="text" name="login_key" value="{{ old('login_key') }}" required autofocus autocomplete="username"
                     class="w-full px-4 py-3 bg-gray-50/50 border border-purple-100 rounded-xl text-xs sm:text-sm text-gray-900 focus:outline-none focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 focus:bg-white transition duration-200"
-                    placeholder="nama@lemhannas.go.id">
+                    placeholder="Email atau Username">
             </div>
 
             <div class="space-y-1.5">
