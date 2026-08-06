@@ -10,24 +10,35 @@ class Aplikasi extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', // <-- Tambahkan baris ini
+        'user_id',
         'nama_aplikasi',
         'pic',
         'status',
+        'server',
         'uraian_singkat',
-        'url',
+        'url_aplikasi',
         'alamat_ip',
         'jenis_akses',
         'platform_aplikasi',
         'platform_database',
-        'bahasa_pemograman',
+        'bahasa_pemrograman',
         'framework',
         'os_server',
         'database_engine',
-        'server',
         'web_server',
         'password_server',
     ];
+
+    /**
+     * 'encrypted' membuat Laravel otomatis meng-enkripsi saat disimpan
+     * dan mendekripsi saat dibaca, sesuai rekomendasi SRS 5.4.
+     */
+    protected function casts(): array
+    {
+        return [
+            'password_server' => 'encrypted',
+        ];
+    }
 
     public function user()
     {
